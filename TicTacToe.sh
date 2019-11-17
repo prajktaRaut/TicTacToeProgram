@@ -31,12 +31,16 @@ function assignLetter()
 	then
 		playerLetter='X'
 		computerLetter='O'
+		echo "Player play first"
 	else
 		playerLetter='O'
 		computerLetter='X'
+		echo "Computer play first"
 	fi
 
 }
+
+
 
 boardPattern
 assignLetter
