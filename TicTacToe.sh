@@ -1,4 +1,4 @@
-#!/bin/bash -x
+x#!/bin/bash -x
 
 echo " Welcome to Tic-Tac-Toe game "
 
@@ -8,7 +8,6 @@ RANDOM_VALUE=0
 
 #Variable
 playerLetter=''
-computerLetter=''
 
 #Array
 declare -a boardstructure
@@ -29,12 +28,8 @@ function assignLetter()
 	if [ $result -eq $RANDOM_VALUE ];
 	then
 		playerLetter='X'
-		computerLetter='O'
-		echo "Player play first"
 	else
 		playerLetter='O'
-		computerLetter='X'
-		echo "Computer play first"
 	fi
 
 }
@@ -48,21 +43,22 @@ function printBoard()
 	echo "----------------- "
 	echo "  ${boardstructure[7]}  |  ${boardstructure[8]}  |  ${boardstructure[9]}  "
 
+
 }
 
 function playerInput()
 {
 	read -p "Enter position number to put $playerLetter at empty position" playerPosition
 
-	if [ ${boardstructure[$playerPosition]} -eq 0 ];
+	if [ ${boardstructure[$playerPosition]} == 0 ];
 	then
+		counter=$(( $counter + 1 ))
 		boardstructure[$playerPosition]=$playerLetter
 
 	else
 		echo "Position is occupied, please enter another number"
 		playerInput
 	fi
-
 
 }
 
@@ -71,4 +67,9 @@ printBoard
 assignLetter
 playerInput
 printBoard
+
+
+
+
+
 
