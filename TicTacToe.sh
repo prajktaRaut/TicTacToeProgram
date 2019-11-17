@@ -4,6 +4,12 @@ echo " Welcome to Tic-Tac-Toe game "
 
 #Constatnt
 MAXPOSITION=9
+RANDOM_VALUE=0
+
+#Variable
+playerLetter=''
+computerLetter=''
+
 
 #Array
 declare -a boardstructure
@@ -17,5 +23,20 @@ do
 done 
 }
 
-boardPattern
+function assignLetter()
+{
+	result=$((RANDOM%2))
 
+	if [ $result -eq $RANDOM_VALUE ];
+	then
+		playerLetter='X'
+		computerLetter='O'
+	else
+		playerLetter='O'
+		computerLetter='X'
+	fi
+
+}
+
+boardPattern
+assignLetter
