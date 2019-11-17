@@ -10,7 +10,6 @@ RANDOM_VALUE=0
 playerLetter=''
 computerLetter=''
 
-
 #Array
 declare -a boardstructure
 
@@ -40,7 +39,36 @@ function assignLetter()
 
 }
 
+function printBoard()
+{
+	echo "-----|-----|----- "
+	echo "  ${boardstructure[1]}  |  ${boardstructure[2]}  |  ${boardstructure[3]}  "
+	echo "----------------- "
+	echo "  ${boardstructure[4]}  |  ${boardstructure[5]}  |  ${boardstructure[6]}  "
+	echo "----------------- "
+	echo "  ${boardstructure[7]}  |  ${boardstructure[8]}  |  ${boardstructure[9]}  "
 
+}
+
+function playerInput()
+{
+	read -p "Enter position number to put $playerLetter at empty position" playerPosition
+
+	if [ ${boardstructure[$playerPosition]} -eq 0 ];
+	then
+		boardstructure[$playerPosition]=$playerLetter
+
+	else
+		echo "Position is occupied, please enter another number"
+		playerInput
+	fi
+
+
+}
 
 boardPattern
+printBoard
 assignLetter
+playerInput
+printBoard
+
