@@ -5,9 +5,13 @@ echo " Welcome to Tic-Tac-Toe game "
 #Constatnt
 MAXPOSITION=9
 RANDOM_VALUE=0
+COLUMN_SIZE=3
+ROW_SIZE=3
 
 #Variable
 playerLetter=''
+computerLetter=''
+
 
 #Array
 declare -a boardstructure
@@ -28,22 +32,31 @@ function assignLetter()
 	if [ $result -eq $RANDOM_VALUE ];
 	then
 		playerLetter='X'
+		computerLetter='O'
 	else
 		playerLetter='O'
+		computerLetter='X'
 	fi
 
 }
 
 function printBoard()
 {
-	echo "-----|-----|----- "
-	echo "  ${boardstructure[1]}  |  ${boardstructure[2]}  |  ${boardstructure[3]}  "
-	echo "----------------- "
-	echo "  ${boardstructure[4]}  |  ${boardstructure[5]}  |  ${boardstructure[6]}  "
-	echo "----------------- "
-	echo "  ${boardstructure[7]}  |  ${boardstructure[8]}  |  ${boardstructure[9]}  "
+	n=1
+	for (( i=1; i<=$COLUMN_SIZE; i++ ))
+	do
+        	for (( j=1; j<=$ROW_SIZE; j++ ))
+        	do
+
+                	printf '\t'
+                	printf '%s' "${boardstructure[$n]}"
+        		n=$(( $n + 1 ))
+        	done
+                	printf '\n'
+	done
 
 }
+
 
 function  winPlayer
 {
