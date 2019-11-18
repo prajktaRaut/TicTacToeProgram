@@ -57,53 +57,7 @@ function printBoard()
 
 }
 
-
-function  winPlayer
-{
-        i=1
-        if [[ ${boardstructure[$i]} == $playerLetter ]] && [[ ${boardstructure[$(($i+1))]} == $playerLetter ]] && [[ ${boardstructure[$(($i+2))]} == $playerLetter ]]
-        then
-                echo  win
-
-
-        elif [[ ${boardstructure[$i+3]} == $playerLetter ]] && [[ ${boardstructure[$i+4]} == $playerLetter ]] && [[ ${boardstructure[$i+5]} == $playerLetter ]]
-        then
-                echo win
-
-        elif [[ ${boardstructure[$i+6]} == $playerLetter ]] && [[ ${boardstructure[$i+7]} == $playerLetter ]] && [[ ${boardstructure[$i+8]} == $playerLetter ]]
-        then
-                echo win
-
-
-        elif [[ ${boardstructure[$i]} == $playerLetter ]] && [[ ${boardstructure[$i+3]} == $playerLetter ]] && [[ ${boardstructure[$i+6]} == $playerLetter ]]
-        then
-                echo win
-
-
-        elif [[ ${boardstructure[$i+1]} == $playerLetter ]] && [[ ${boardstructure[$i+4]} == $playerLetter ]] && [[ ${boardstructure[$i+7]} == $playerLetter ]]
-        then
-                echo win
-
-
-        elif [[ ${boardstructure[$i+2]} == $playerLetter ]] && [[ ${boardstructure[$i+5]} == $playerLetter ]] && [[ ${boardstructure[$i+8]} == $playerLetter ]]
-        then
-                echo win
-
-
-        elif [[ ${boardstructure[$i]} == $playerLetter ]] && [[ ${boardstructure[$i+4]} == $playerLetter ]] && [[ ${boardstructure[$i+8]} == $playerLetter ]]
-        then
-                echo win
-
-
-        elif [[ ${boardstructure[$i+2]} == $playerLetter ]] && [[ ${boardstructure[$i+4]} == $playerLetter ]] && [[ ${boardstructure[$i+6]} == $playerLetter ]]
-        then
-                echo win
-        fi
-}
-
-
-
-function playerInput()
+function playerInput
 {
         counter=0
         while [ true ]
@@ -120,7 +74,9 @@ function playerInput()
                 playerInput
         fi
                 printBoard
-                winPlayer
+		checkWinForHorizontal
+		CheckWinForVertical
+		checkWinForDiagonal
 
                 if [ $counter -eq 3 ];
                 then
@@ -128,6 +84,62 @@ function playerInput()
                 fi
 
         done
+
+}
+
+function checkWinForHorizontal()
+{
+        count=0
+        position=1
+        while [ $count -lt 3 ]
+        do
+                if [[ ${boardstructure[$position]} == $playerLetter ]] && [[ ${boardstructure[$position]} == ${boardstructure[$position +1]} ]] && [[ ${boardstructure[$position +1]} == ${boardstructure[$position +2]} ]]
+                then
+                        echo "Win"
+                        break
+                fi
+                        position=$(( $position + 3 ))
+                        count=$(( $count + 1 ))
+        done
+}
+
+function CheckWinForVertical()
+{
+	count1=0
+        position=1
+        while [ $count1 -lt 3 ]
+        do
+                if [[ ${boardstructure[$position]} == $playerLetter ]] && [[ ${boardstructure[$position]} == ${boardstructure[$position +3]} ]] && [[ ${boardstructure[$position+3]} == ${boardstructure[$position +6]} ]]
+                then
+                        echo "Win"
+                        break
+                fi
+                        position=$(( $position + 1 ))
+                        count1=$(( $count1 + 1 ))
+        done
+
+}
+
+function  checkWinForDiagonal()
+{
+
+	count2=0
+        position=1
+        while [ $count2 -lt 2 ]
+        do
+                if [[ ${boardstructure[$position]} == $playerLetter ]] && [[ ${boardstructure[$position]} == ${boardstructure[$position +4]} ]] && [[ ${boardstructure[$position + 4]} == ${boardstructure[$position + 8]} ]]
+                then
+                        echo "Win"
+                        break
+
+		elif [[ ${boardstructure[$position + 2]} == $playerLetter ]] && [[ ${boardstructure[$position + 2]} == ${boardstructure[$position +4]} ]] && [[ ${boardstructure[$position + 4]} == ${boardstructure[$position +6]} ]] 		
+		then
+			echo "win"
+			break
+                fi
+                        count2=$(( $count2 + 1 ))
+        done
+
 
 }
 
