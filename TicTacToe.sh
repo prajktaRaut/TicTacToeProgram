@@ -8,7 +8,6 @@ RANDOM_VALUE=0
 
 #Variable
 playerLetter=''
-computerLetter=''
 
 #Array
 declare -a boardstructure
@@ -29,12 +28,8 @@ function assignLetter()
 	if [ $result -eq $RANDOM_VALUE ];
 	then
 		playerLetter='X'
-		computerLetter='O'
-		echo "Player play first"
 	else
 		playerLetter='O'
-		computerLetter='X'
-		echo "Computer play first"
 	fi
 
 }
@@ -50,19 +45,76 @@ function printBoard()
 
 }
 
+function  winPlayer
+{
+        i=1
+        if [[ ${boardstructure[$i]} == $playerLetter ]] && [[ ${boardstructure[$(($i+1))]} == $playerLetter ]] && [[ ${boardstructure[$(($i+2))]} == $playerLetter ]]
+        then
+                echo  win
+
+
+        elif [[ ${boardstructure[$i+3]} == $playerLetter ]] && [[ ${boardstructure[$i+4]} == $playerLetter ]] && [[ ${boardstructure[$i+5]} == $playerLetter ]]
+        then
+                echo win
+
+        elif [[ ${boardstructure[$i+6]} == $playerLetter ]] && [[ ${boardstructure[$i+7]} == $playerLetter ]] && [[ ${boardstructure[$i+8]} == $playerLetter ]]
+        then
+                echo win
+
+
+        elif [[ ${boardstructure[$i]} == $playerLetter ]] && [[ ${boardstructure[$i+3]} == $playerLetter ]] && [[ ${boardstructure[$i+6]} == $playerLetter ]]
+        then
+                echo win
+
+
+        elif [[ ${boardstructure[$i+1]} == $playerLetter ]] && [[ ${boardstructure[$i+4]} == $playerLetter ]] && [[ ${boardstructure[$i+7]} == $playerLetter ]]
+        then
+                echo win
+
+
+        elif [[ ${boardstructure[$i+2]} == $playerLetter ]] && [[ ${boardstructure[$i+5]} == $playerLetter ]] && [[ ${boardstructure[$i+8]} == $playerLetter ]]
+        then
+                echo win
+
+
+        elif [[ ${boardstructure[$i]} == $playerLetter ]] && [[ ${boardstructure[$i+4]} == $playerLetter ]] && [[ ${boardstructure[$i+8]} == $playerLetter ]]
+        then
+                echo win
+
+
+        elif [[ ${boardstructure[$i+2]} == $playerLetter ]] && [[ ${boardstructure[$i+4]} == $playerLetter ]] && [[ ${boardstructure[$i+6]} == $playerLetter ]]
+        then
+                echo win
+        fi
+}
+
+
+
 function playerInput()
 {
-	read -p "Enter position number to put $playerLetter at empty position" playerPosition
+        counter=0
+        while [ true ]
+        do
+        read -p "Enter position number to put $playerLetter at empty position" playerPosition
 
-	if [ ${boardstructure[$playerPosition]} -eq 0 ];
-	then
-		boardstructure[$playerPosition]=$playerLetter
+        if [ ${boardstructure[$playerPosition]} == 0 ];
+        then
+                counter=$(( $counter + 1 ))
+                boardstructure[$playerPosition]=$playerLetter
 
-	else
-		echo "Position is occupied, please enter another number"
-		playerInput
-	fi
+        else
+                echo "Position is occupied, please enter another number"
+                playerInput
+        fi
+                printBoard
+                winPlayer
 
+                if [ $counter -eq 3 ];
+                then
+                        break
+                fi
+
+        done
 
 }
 
@@ -70,5 +122,3 @@ boardPattern
 printBoard
 assignLetter
 playerInput
-printBoard
-
