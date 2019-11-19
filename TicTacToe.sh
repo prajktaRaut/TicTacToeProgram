@@ -201,21 +201,22 @@ function playerInput()
         do
         read -p "Enter position number to put $playerLetter at empty position" playerPosition
 
-        if [ ${boardstructure[$playerPosition]} == 0 ];
-        then
-                counter=$(( $counter + 1 ))
-                boardstructure[$playerPosition]=$playerLetter
+        	if [ ${boardstructure[$playerPosition]} == 0 ];
+        	then
+                	counter=$(( $counter + 1 ))
+               	 	boardstructure[$playerPosition]=$playerLetter
 
-        else
-                echo "Position is occupied, please enter another number"
-                playerInput
-        fi
-                printBoard
-
+        	else
+                	echo "Position is occupied, please enter another number"
+                	playerInput
+        	fi
+                
+		printBoard
 		checkWinForHorizontal
 		CheckWinForVertical
 		checkWinForDiagonal
-
+	done
+}
 boardPattern
 printBoard
 assignLetter
