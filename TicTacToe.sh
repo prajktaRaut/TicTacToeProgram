@@ -3,11 +3,15 @@
 echo " Welcome to Tic-Tac-Toe game "
 
 #Constatnt
-MAXPOSITION=9
+MAX_POSITION=9
 RANDOM_VALUE=0
+COLUMN_SIZE=3
+ROW_SIZE=3
 
 #Variable
 playerLetter=''
+computerLetter=''
+
 
 #Array
 declare -a boardstructure
@@ -15,7 +19,7 @@ declare -a boardstructure
 
 function boardPattern()
 {
-for (( i=1; i<= MAXPOSITION; i++ ))
+for (( i=1; i<= MAX_POSITION; i++ ))
 do
 	boardstructure[$i]=0
 done 
@@ -28,71 +32,171 @@ function assignLetter()
 	if [ $result -eq $RANDOM_VALUE ];
 	then
 		playerLetter='X'
+		computerLetter='O'
 	else
 		playerLetter='O'
+		computerLetter='X'
 	fi
 
 }
 
 function printBoard()
 {
-	echo "-----|-----|----- "
-	echo "  ${boardstructure[1]}  |  ${boardstructure[2]}  |  ${boardstructure[3]}  "
-	echo "----------------- "
-	echo "  ${boardstructure[4]}  |  ${boardstructure[5]}  |  ${boardstructure[6]}  "
-	echo "----------------- "
-	echo "  ${boardstructure[7]}  |  ${boardstructure[8]}  |  ${boardstructure[9]}  "
+	n=1
+	for (( i=1; i<=$COLUMN_SIZE; i++ ))
+	do
+        	for (( j=1; j<=$ROW_SIZE; j++ ))
+        	do
+
+                	printf '\t'
+                	printf '%s' "${boardstructure[$n]}"
+        		n=$(( $n + 1 ))
+        	done
+                	printf '\n'
+	done
 
 }
 
-function  winPlayer
+function checkWinForHorizontal()
 {
-        i=1
-        if [[ ${boardstructure[$i]} == $playerLetter ]] && [[ ${boardstructure[$(($i+1))]} == $playerLetter ]] && [[ ${boardstructure[$(($i+2))]} == $playerLetter ]]
-        then
-                echo  win
-
-
-        elif [[ ${boardstructure[$i+3]} == $playerLetter ]] && [[ ${boardstructure[$i+4]} == $playerLetter ]] && [[ ${boardstructure[$i+5]} == $playerLetter ]]
-        then
-                echo win
-
-        elif [[ ${boardstructure[$i+6]} == $playerLetter ]] && [[ ${boardstructure[$i+7]} == $playerLetter ]] && [[ ${boardstructure[$i+8]} == $playerLetter ]]
-        then
-                echo win
-
-
-        elif [[ ${boardstructure[$i]} == $playerLetter ]] && [[ ${boardstructure[$i+3]} == $playerLetter ]] && [[ ${boardstructure[$i+6]} == $playerLetter ]]
-        then
-                echo win
-
-
-        elif [[ ${boardstructure[$i+1]} == $playerLetter ]] && [[ ${boardstructure[$i+4]} == $playerLetter ]] && [[ ${boardstructure[$i+7]} == $playerLetter ]]
-        then
-                echo win
-
-
-        elif [[ ${boardstructure[$i+2]} == $playerLetter ]] && [[ ${boardstructure[$i+5]} == $playerLetter ]] && [[ ${boardstructure[$i+8]} == $playerLetter ]]
-        then
-                echo win
-
-
-        elif [[ ${boardstructure[$i]} == $playerLetter ]] && [[ ${boardstructure[$i+4]} == $playerLetter ]] && [[ ${boardstructure[$i+8]} == $playerLetter ]]
-        then
-                echo win
-
-
-        elif [[ ${boardstructure[$i+2]} == $playerLetter ]] && [[ ${boardstructure[$i+4]} == $playerLetter ]] && [[ ${boardstructure[$i+6]} == $playerLetter ]]
-        then
-                echo win
-        fi
+        count=0
+        position=1
+        while [ $count -lt 3 ]
+        do
+                if [[ ${boardstructure[$position]} == $playerLetter ]] && [[ ${boardstructure[$position]} == ${boardstructure[$position +1]} ]] && [[ ${boardstructure[$position +1]} == ${boardstructure[$position +2]} ]]
+                then
+                        echo "Win"
+                        break
+		else
+			checkComputerVerticleMove
+		
+                 fi
+                        position=$(( $position + 3 ))
+                        count=$(( $count + 1 ))
+        done
 }
 
+function CheckWinForVertical()
+{
+	increment=0
+        position=1
+        while [ $increment -lt 3 ]
+        do
+                if [[ ${boardstructure[$position]} == $playerLetter ]] && [[ ${boardstructure[$position]} == ${boardstructure[$position +3]} ]] && [[ ${boardstructure[$position+3]} == ${boardstructure[$position +6]} ]]
+                then
+                        echo "Win"
+                        break
+		else
+			checkComputerVerticleMove
+                fi
+                        position=$(( $position + 1 ))
+                        increment=$(( $increment + 1 ))
+        done
 
+}
+
+function  checkWinForDiagonal()
+{
+
+	value=1
+        position=1
+        while [ $value -lt 2 ]
+        do
+                if [[ ${boardstructure[$position]} == $playerLetter ]] && [[ ${boardstructure[$position]} == ${boardstructure[$position +4]} ]] && [[ ${boardstructure[$position + 4]} == ${boardstructure[$position + 8]} ]]
+                then
+                        echo "Win"
+                        break
+		else
+			 checkComputerFirstDiagonalMove
+		fi
+
+		if [[ ${boardstructure[$position + 2]} == $playerLetter ]] && [[ ${boardstructure[$position + 2]} == ${boardstructure[$position +4]} ]] && [[ ${boardstructure[$position + 4]} == ${boardstructure[$position +6]} ]] 		
+		then
+			echo "win"
+			break
+		else
+			checkComputerSecondDiagonalMove
+                fi
+
+                        value=$(( $value + 1 ))
+        done
+
+
+}
+
+function checkComputerVerticleMove()
+{
+
+		if [[ ${boardstructure[$position]} == $playerLetter ]] && [[ ${boardstructure[$position]} == ${boardstructure[$position+6]} ]]
+		then
+			 echo "position $(($position + 3 )) is blank"
+
+		elif [[ ${boardstructure[$position]} == $playerLetter ]] &&[[ ${boardstructure[$position]} == ${boardstructure[$position+3]} ]];
+		then
+			echo "position $(($position +6 )) is blank" 
+
+		elif [[ ${boardstructure[$position + 3]} == $playerLetter ]] && [[ ${boardstructure[$position+3]} == ${boardstructure[$position+6]} ]];
+		then
+			 echo "position $(($position)) is blank"
+		fi
+
+}
+
+function checkComputerHorizontalMove()
+{
+		if [[ ${boardstructure[$position]} == $playerLetter ]] && [[ ${boardstructure[$position]} == ${boardstructure[$position+2]} ]]
+                then
+                         echo "position $(($position + 1 )) is blank"
+
+                elif [[ ${boardstructure[$position]} == $playerLetter ]] &&[[ ${boardstructure[$position]} == ${boardstructure[$position+1]} ]];
+                then
+                        echo "position $(($position +2 )) is blank" 
+
+                elif [[ ${boardstructure[$position + 1]} == $playerLetter ]] && [[ ${boardstructure[$position+1]} == ${boardstructure[$position+2]} ]]
+                then
+                         echo "position $(($position)) is blank"
+                fi
+
+}
+
+function checkComputerFirstDiagonalMove()
+{
+		if [[ ${boardstructure[$position]} == $playerLetter ]] && [[ ${boardstructure[$position]} == ${boardstructure[$position+8]} ]];
+                then
+                         echo "position $(($position + 4 )) is blank"
+
+                elif [[ ${boardstructure[$position]} == $playerLetter ]] && [[ ${boardstructure[$position]} == ${boardstructure[$position+4]} ]];
+                then
+                        echo "position $(($position + 8 )) is blank" 
+
+                elif [[ ${boardstructure[$position + 4]} == $playerLetter ]] && [[ ${boardstructure[$position+4]} == ${boardstructure[$position+8]} ]]
+                then
+                         echo "position $(($position)) is blank"
+                fi
+
+}
+
+function checkComputerSecondDiagonalMove()
+{
+	 if [[ ${boardstructure[$position+2]} == $playerLetter ]] && [[ ${boardstructure[$position+2]} == ${boardstructure[$position+6]} ]];
+                then
+                         echo "position $(($position + 4 )) is blank"
+
+                elif [[ ${boardstructure[$position+2]} == $playerLetter ]] && [[ ${boardstructure[$position+2]} == ${boardstructure[$position+4]} ]];
+                then
+                        echo "position $(($position + 6 )) is blank" 
+
+                elif [[ ${boardstructure[$position + 4]} == $playerLetter ]] && [[ ${boardstructure[$position+4]} == ${boardstructure[$position+6]} ]]
+                then
+                         echo "position $(($position+2)) is blank"
+                fi
+
+
+}
 
 function playerInput()
 {
-        counter=0
+	counter=0
         while [ true ]
         do
         read -p "Enter position number to put $playerLetter at empty position" playerPosition
@@ -107,7 +211,9 @@ function playerInput()
                 playerInput
         fi
                 printBoard
-                winPlayer
+                checkWinForHorizontal
+                CheckWinForVertical
+                checkWinForDiagonal
 
                 if [ $counter -eq 3 ];
                 then
@@ -117,6 +223,8 @@ function playerInput()
         done
 
 }
+
+
 
 boardPattern
 printBoard
