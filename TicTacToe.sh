@@ -267,6 +267,18 @@ function checkCorner()
 
 }
 
+function checkCenter()
+{
+        value=1
+        cornerValue=$(checkCorner)
+
+        if [[ ${boardstructure[cornerValue]} != 0 ]];
+        then 
+                echo $(( $value +4 ))
+        fi
+
+}
+
 function playerInput()
 {
 
@@ -301,6 +313,7 @@ function computerInput()
 
 	cornerValue=$(checkCorner)
 
+	centerValue=$(checkCenter)
 
 	if [[ ${boardstructure[$rowValue]} == 0 ]];
 	then
@@ -321,7 +334,11 @@ function computerInput()
 	elif [[ ${boardstructure[$cornerValue]} == 0 ]];
         then
                  boardstructure[$cornerValue]=$computerLetter
-	fi
+	
+	elif [[ ${boardstructure[$centerValue]} == 0 ]];
+        then
+                 boardstructure[$centerValue]=$computerLetter
+        fi
 		play=true
 }
 
