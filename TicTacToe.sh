@@ -245,6 +245,28 @@ function checkComputerSecondDiagonalMove()
 
 }
 
+function checkCorner()
+{
+	newPosition=1
+	if [[ ${boardstructure[$newPosition]} == 0 ]];
+	then
+		echo $(( $newPosition ))
+
+	elif [[ ${boardstructure[$newPosition+2]} == 0 ]];
+	then
+		echo $(( $newPosition + 2 ))
+
+	elif [[ ${boardstructure[$newPosition+6]} == 0 ]];
+	then
+		echo $(( $newPosition +6 ))
+
+	elif [[ ${boardstructure[$newPosition+8]} == 0 ]];
+	then
+		echo $(( $newPosition +8 ))
+	fi
+
+}
+
 function playerInput()
 {
 
@@ -276,8 +298,8 @@ function computerInput()
 	firstDiagonalValue=$(checkComputerFirstDiagonalMove $playerLetter)
 
 	secondDiagonalValue=$(checkComputerSecondDiagonalMove $playerLetter)
-       
-	computerPosition=$((RANDOM%9 +1))
+
+	cornerValue=$(checkCorner)
 
 
 	if [[ ${boardstructure[$rowValue]} == 0 ]];
@@ -296,18 +318,10 @@ function computerInput()
         then
                  boardstructure[$secondDiagonalValue]=$computerLetter
 
-	else
-
-		if [[ ${boardstructure[$computerPosition]} == 0 ]];
-        	then
-                	boardstructure[$computerPosition]=$computerLetter
-		else
-			#echo "position is occupied, please enter another number"
-			computerInput
-		fi
-
+	elif [[ ${boardstructure[$cornerValue]} == 0 ]];
+        then
+                 boardstructure[$cornerValue]=$computerLetter
 	fi
-		#printBoard
 		play=true
 }
 
@@ -326,10 +340,6 @@ function checkTie()
 			count=$(($count +1 ))
 	done
 }
-
-
-
-
 
 function whoPlayFirst()
 {
@@ -359,7 +369,7 @@ function checkWin()
 {
 
 		symbol=$1
-  		checkWinForHorizontal $symbol
+  		CheckWinForHorizontal $symbol
                 CheckWinForVertical $symbol
                 checkWinForDiagonal $symbol
 
