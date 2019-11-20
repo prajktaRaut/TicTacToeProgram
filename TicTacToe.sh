@@ -279,6 +279,28 @@ function checkCenter()
 
 }
 
+function checkOtherSide()
+{
+        newPosition=2
+        if [[ ${boardstructure[$newPosition]} == 0 ]];
+        then
+                echo $(( $newPosition ))
+
+        elif [[ ${boardstructure[$newPosition+2]} == 0 ]];
+        then
+                echo $(( $newPosition + 2 ))
+
+        elif [[ ${boardstructure[$newPosition+4]} == 0 ]];
+        then
+                echo $(( $newPosition +4 ))
+
+        elif [[ ${boardstructure[$newPosition+6]} == 0 ]];
+        then
+                echo $(( $newPosition +8 ))
+        fi
+
+}
+
 function playerInput()
 {
 
@@ -315,6 +337,8 @@ function computerInput()
 
 	centerValue=$(checkCenter)
 
+	sideValue=$(checkOtherSide)
+
 	if [[ ${boardstructure[$rowValue]} == 0 ]];
 	then
 		 boardstructure[$rowValue]=$computerLetter
@@ -338,6 +362,11 @@ function computerInput()
 	elif [[ ${boardstructure[$centerValue]} == 0 ]];
         then
                  boardstructure[$centerValue]=$computerLetter
+	
+	elif [[ ${boardstructure[$sideValue]} == 0 ]];
+        then
+                 boardstructure[$sideValue]=$computerLetter
+
         fi
 		play=true
 }
